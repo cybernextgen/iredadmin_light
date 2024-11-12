@@ -1,0 +1,40 @@
+{% extends "base.html" %} 
+
+{% block title %}
+Аутентификация
+{% endblock %}
+
+{% block body %}
+<div class="login_form__container">
+  <div class="card login_form__form">
+    <header>
+      <h4>Аутентификация</h4>
+    </header>
+    <form method="post">
+      {% if error %}
+      <p class="text-error">{{error}}</p>
+      {% endif %}
+
+      <input type="hidden" value="{{next}}" />
+
+      <p>
+        <label for="input__text">Домен</label>
+        <input id="input__text" type="text" name="domain" value="{{domain or ''}}" 
+          {% if error %}class="error"{% endif %} placeholder="Введите домен" />
+      </p>
+
+      <p>
+        <label for="input__text">Логин</label>
+        <input id="input__text" type="text" name="username" value="{{username or ''}}" 
+          {% if error %}class="error"{% endif %} placeholder="Введите логин администратора" />
+      </p>
+      <p>
+        <label for="input__password">Пароль</label>
+        <input id="input__password" type="password" name="password" 
+        {% if error %}class="error"{% endif %} placeholder="Введите пароль администратора" />
+      </p>
+      <p><button type="submit">Войти</button></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

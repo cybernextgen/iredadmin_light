@@ -1,0 +1,12 @@
+.login_form__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.login_form__form {
+  width: 50%;
+  max-width: 500px;
+  min-width: 300px;
+}
