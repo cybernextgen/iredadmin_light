@@ -10,3 +10,7 @@
   max-width: 500px;
   min-width: 300px;
 }
+
+.breadcrumbs {
+  margin-bottom: 1rem;
+}

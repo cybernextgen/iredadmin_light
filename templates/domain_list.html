@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %} Домены {% endblock %} {% block body
+%}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Домены</h1>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Наименование</th>
+            <th>Количество пользователей</th>
+            <th>Домен активен</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for info in domain_info %}
+          <tr>
+            <td>
+              <a href="{{ url_for('user_list', domain=info['domainName']) }}"
+                >{{ info["domainName"] }}</a
+              >
+            </td>
+            <td>{{ info["domainCurrentUserNumber"] }}</td>
+            <td>{{ info["accountStatus"] | localize }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

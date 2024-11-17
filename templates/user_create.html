@@ -1,0 +1,95 @@
+{% extends "base.html" %} 
+
+{% block title %}Пользователь{% endblock %} 
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Создание пользователя</h1>
+
+      <div class="row breadcrumbs">
+        <div class="col">
+          <a href="{{url_for('domain_list')}}">{{domain}}</a> /
+          <a href="{{url_for('user_list', domain=domain)}}">Пользователи</a> /
+          <span class="text-light">Создание пользователя</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-8 col-6-md">
+          {% if error %}
+          <p class="text-error">{{error}}</p>
+          {% endif %} 
+
+          {% if success %}
+          <p class="text-success">{{success}}</p>
+          {% endif %}
+
+          
+          <form method="post" autocomplete="off">
+			<p>
+				<label for="uid">Идентификатор</label>
+				<input id="uid" type="text" name="uid" required
+				{% if 'uid' in validation_errors %}
+				class="error"
+				{% endif %}
+				value="{{user['uid'] or ''}}"
+				/>
+				{% if 'uid' in validation_errors %}
+				<p class="text-error">
+				  {{validation_errors['uid']}}
+				</p>
+				{% endif %}				
+			</p>
+
+			<p>
+				<label for="password">Пароль</label>
+				<input name="password" type="password" id="password" required autocomplete="new-password"
+				  {% if 'password' in validation_errors %}
+				  class="error"
+				  {% endif %}
+				/>
+				{% if 'password' in validation_errors %}
+				<p class="text-error">
+				  {{validation_errors['password']}}
+				</p>
+				{% endif %}
+			  </p>
+			  <p>
+				<label for="password_repeat">Пароль (повторно)</label>
+				<input name="password_repeat" type="password" id="password_repeat" required
+				{% if 'password_repeat' in validation_errors %}
+				class="error"
+				{% endif %}
+				/>
+				{% if 'password_repeat' in validation_errors %}
+				<p class="text-error">
+				  {{validation_errors['password_repeat']}}
+				</p>
+				{% endif %}
+			  </p>
+
+			  <p>
+				<label for="mailQuota">Квота, МБ</label>
+				<input
+				  id="mailQuota"
+				  name="mailQuota"
+				  type="number"
+				  value="{{user['mailQuota'] or 100}}"
+				  required
+				/>
+			  </p>			  
+			  <p>
+				<button type="submit" class="button primary">
+				  Сохранить
+				</button>
+			  </p>			
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+{% endblock %}

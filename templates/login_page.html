@@ -18,15 +18,9 @@
       <input type="hidden" value="{{next}}" />
 
       <p>
-        <label for="input__text">Домен</label>
-        <input id="input__text" type="text" name="domain" value="{{domain or ''}}" 
-          {% if error %}class="error"{% endif %} placeholder="Введите домен" />
-      </p>
-
-      <p>
-        <label for="input__text">Логин</label>
-        <input id="input__text" type="text" name="username" value="{{username or ''}}" 
-          {% if error %}class="error"{% endif %} placeholder="Введите логин администратора" />
+        <label for="input__text">Email</label>
+        <input id="input__text" type="text" name="email" value="{{email or ''}}" 
+          {% if error %}class="error"{% endif %} placeholder="Введите email администратора" />
       </p>
       <p>
         <label for="input__password">Пароль</label>

@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Пользователи{% endblock %} {% block
+body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Пользователи</h1>
+
+      <div class="row breadcrumbs">
+        <div class="col">
+          <a href="{{url_for('domain_list')}}">{{domain}}</a> /
+          <span class="text-light">Пользователи</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <a
+            href="{{url_for('user_create', domain=domain)}}"
+            class="button primary outline"
+            >Создать</a
+          >
+          <a href="" class="button secondary outline">Создать из .csv</a>
+        </div>
+      </div>
+
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Идентификатор</th>
+            <th>Квота</th>
+            <th>Глобальный администратор</th>
+            <th>Аккаунт активен</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>
+              <a
+                href="{{ url_for('user_view', domain=domain, user_uid=user['uid'], edit_mode='general') }}"
+                >{{ user["uid"] }}</a
+              >
+            </td>
+            <td>{{ user["mailQuota"] | as_megabytes }}</td>
+            <td>{{ user["domainGlobalAdmin"] | localize }}</td>
+            <td>{{ user["accountStatus"] | localize}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {%endblock %}
+</div>

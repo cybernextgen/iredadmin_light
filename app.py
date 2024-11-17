@@ -2,18 +2,24 @@ from flask import Flask
 from models.settings import get_settings
 from pydantic import ValidationError
 import sys
-import routes
+
+from models.ldap_connection import get_connection
 
 app = Flask(__name__)
 
+import routes
+import template_filters
+
 try:
-    get_settings()
+    settings = get_settings()
 except ValidationError as e:
     app.logger.error(e)
     sys.exit(1)
 
 
-if __name__ == "__main__":
-    routes.register(app)
-    app.config.update(get_settings())
-    app.run()
+# get_connection(settings.LDAP_USER, settings.LDAP_PASSWORD)
+
+routes.register(app)
+template_filters.register(app)
+
+app.config.update(get_settings())

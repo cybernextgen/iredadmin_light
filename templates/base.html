@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>IredAdmin light - {% block title %}{% endblock %}</title>
+    <title>iRedAdmin light - {% block title %}{% endblock %}</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/static/chota.min.css" />
@@ -13,16 +13,12 @@
     <nav class="nav">
       <div class="nav-left">
         <a class="brand" href="/"><img src="/static/logo-iredmail.png" alt="iredmail logo" /> iRedAdmin Light</a>
+        
 
-        {% if session['username'] %}
-        <div class="tabs">
-          <a class="active">Пользователи</a>
-        </div>
-        {% endif %}
       </div>
       <div class="nav-right">
-        {% if session['username'] %}
-        <a class="button outline" href="{{url_for('logout')}}">Выйти {{session['username']}}</a>
+        {% if session['email'] %}
+        <a class="button outline" href="{{url_for('logout')}}">Выйти {{session['email']}}</a>
         {% endif %}
       </div>
     </nav>

@@ -1,0 +1,188 @@
+{% extends "base.html" %} {% block title %}Пользователь{% endblock %} {% block
+body %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>{{ user['uid'] }}</h1>
+
+      <div class="row breadcrumbs">
+        <div class="col">
+          <a href="{{url_for('domain_list')}}">{{domain}}</a> /
+          <a href="{{url_for('user_list', domain=domain)}}">Пользователи</a> /
+          <span class="text-light">{{ user['uid'] }}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <nav class="tabs">
+            <a
+              {% if edit_mode == "general" %}
+              class="active"
+              {% endif %}
+              href="{{url_for('user_view', domain=domain, user_uid=user['uid'], edit_mode='general')}}"
+              >Общая информация</a
+            >
+            <a
+            {% if edit_mode == "password" %}
+            class="active"
+            {% endif %}
+            href="{{url_for('user_view', domain=domain, user_uid=user['uid'], edit_mode='password')}}"
+            >Пароль</a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-8 col-6-md">
+          {% if error %}
+          <p class="text-error">{{error}}</p>
+          {% endif %} 
+
+          {% if success %}
+          <p class="text-success">{{success}}</p>
+          {% endif %}
+
+          
+          <form method="post">
+
+            {% if edit_mode == "general" %}
+            <input type="hidden" value="{{ user['uid'] }}" name="uid" />
+
+            <div class="row">
+              <div class="col">
+                <p>
+                  <label for="accountStatus"
+                    ><input id="accountStatus" name="accountStatus"
+                    type="checkbox" {% if user['accountStatus'] %}checked{%
+                    endif %}> Запись активна</label
+                  >
+                </p>
+                <p>
+                  <label for="mailQuota">Квота, МБ</label>
+                  <input
+                    id="mailQuota"
+                    name="mailQuota"
+                    type="number"
+                    value="{{user['mailQuota'] | as_megabytes}}"
+                    required
+                  />
+                </p>
+
+                <p>
+                  <label for="cn">Полное имя</label>
+                  <input id="cn" name="cn" type="text" value="{{user['cn']}}" />
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  <label for="givenName">Первое имя</label>
+                  <input
+                    id="givenName"
+                    name="givenName"
+                    type="text"
+                    value="{{user['givenName']}}"
+                  />
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <label for="sn">Второе имя</label>
+                  <input id="sn" name="sn" type="text" value="{{user['sn']}}" />
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  <label for="employeeNumber">Табельный номер</label>
+                  <input
+                    id="employeeNumber"
+                    name="employeeNumber"
+                    type="text"
+                    value="{{user['employeeNumber']}}"
+                  />
+                </p>
+                <p>
+                  <label for="title">Должность</label>
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    value="{{user['title']}}"
+                  />
+                </p>
+                <p>
+                  <label for="mobile">Мобильный телефон</label>
+                  <input
+                    id="mobile"
+                    name="mobile"
+                    type="text"
+                    value="{{user['mobile']}}"
+                  />
+                </p>
+                <p>
+                  <label for="telephoneNumber">Рабочий телефон</label>
+                  <input
+                    id="telephoneNumber"
+                    name="telephoneNumber"
+                    type="text"
+                    value="{{user['telephoneNumber']}}"
+                  />
+                </p>
+                <p>
+                  <label for="domainGlobalAdmin"
+                    ><input id="domainGlobalAdmin" name="domainGlobalAdmin"
+                    type="checkbox" {% if user['domainGlobalAdmin'] %}checked{%
+                    endif %}> Глобальный администратор</label
+                  >
+                </p>
+                <p>
+                  <button type="submit" class="button primary">
+                    Сохранить
+                  </button>
+                </p>
+              </div>
+            </div>
+
+            {% else %}
+            <p>
+              <label for="password">Пароль</label>
+              <input name="password" type="password" id="password" required autocomplete="new-password"
+                {% if 'password' in validation_errors %}
+                class="error"
+                {% endif %}
+              />
+              {% if 'password' in validation_errors %}
+              <p class="text-error">
+                {{validation_errors['password']}}
+              </p>
+              {% endif %}
+            </p>
+            <p>
+              <label for="password_repeat">Пароль (повторно)</label>
+              <input name="password_repeat" type="password" id="password_repeat" required
+              {% if 'password_repeat' in validation_errors %}
+              class="error"
+              {% endif %}
+              />
+              {% if 'password_repeat' in validation_errors %}
+              <p class="text-error">
+                {{validation_errors['password_repeat']}}
+              </p>
+              {% endif %}
+            </p>
+            <p>
+              <button type="submit" class="button primary">
+                Сохранить
+              </button>
+            </p>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

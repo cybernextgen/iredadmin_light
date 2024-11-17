@@ -1,11 +1,11 @@
-from flask import session, request, redirect, url_for
+from flask import session, request, redirect, url_for, g
 from utils.decorators import templated
 from typing import Optional
-from models.ldap_connection import LDAPConnection
+from models.ldap_connection import get_connection
 from app import app
 
 
-def authenticate_user(domain: str, username: str, password: str) -> bool:
+def authenticate_user(email: str, password: str) -> bool:
     """
     Выполняет аутентификацию пользователя по переданной комбинации логина и пароля
 
@@ -16,14 +16,12 @@ def authenticate_user(domain: str, username: str, password: str) -> bool:
         булево: истина, если пользователь успешно аутентифицирован
     """
     try:
-        LDAPConnection(domain, username, password)
-        app.logger.info(
-            f"Аутентификация пользователя {username} и домена {domain} выполнена успешно"
-        )
+        get_connection(email, password)
+        app.logger.info(f"Аутентификация пользователя {email} выполнена успешно")
         return True
     except Exception as e:
         app.logger.error(
-            f"Не удалось выполнить аутентификацию для пользователя {username} и домена {domain} по причине: {e}"
+            f"Не удалось выполнить аутентификацию для пользователя {email} по причине: {e}"
         )
         return False
 
@@ -36,21 +34,18 @@ def login_page():
     next = request.args.get("next", "/")
 
     error: Optional[str] = None
-    username: Optional[str] = None
-    domain: Optional[str] = None
+    email: Optional[str] = None
 
     if request.method == "POST":
-        domain, username, password = (
-            request.form["domain"],
-            request.form["username"],
+        email, password = (
+            request.form["email"],
             request.form["password"],
         )
-        if authenticate_user(domain, username, password):
-            session["username"] = request.form["username"]
-            session["domain"] = request.form["domain"]
+        if authenticate_user(email, password):
+            session["email"] = request.form["email"]
             return redirect(next)
         error = "Введены некорректные данные!"
-    return {"next": next, "error": error, "username": username, "domain": domain}
+    return {"next": next, "error": error, "email": email}
 
 
 def logout():
